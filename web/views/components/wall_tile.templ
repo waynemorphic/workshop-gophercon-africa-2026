@@ -1,0 +1,31 @@
+package components
+
+import "workshop/internal/domain/sighting"
+
+templ WallTile(s sighting.Sighting, i int) {
+	<article class={ "tile", tileShape(i) }>
+		if photo, ok := FirstPhoto(s); ok {
+			<img class="tile__photo" src={ photo.URL } alt={ PhotoAlt(s, photo) } loading="lazy"/>
+		} else {
+			<div class="tile__blank" aria-hidden="true">
+				<span>{ DisplayName(s.Species) }</span>
+			</div>
+		}
+		<div class="tile__caption">
+			<h3>{ DisplayName(s.Species) }</h3>
+			if s.Species.ScientificName != "" {
+				<p class="tile__scientific">{ s.Species.ScientificName }</p>
+			}
+			<p>{ Place(s.Location) } · { s.HappenedAt.Format("2 Jan 2006") }</p>
+			if s.IndividualCount != nil {
+				<p>{ individuals(*s.IndividualCount) }</p>
+			}
+			if s.RecordedBy != "" {
+				<p class="tile__by">Seen by { s.RecordedBy }</p>
+			}
+			if s.ReferenceURL != "" {
+				<a class="tile__link" href={ templ.URL(s.ReferenceURL) } rel="noopener">View the record</a>
+			}
+		</div>
+	</article>
+}

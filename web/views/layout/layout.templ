@@ -1,7 +1,8 @@
 package layout
 
 type BaseProps struct {
-	Title string
+	Title       string
+	Description string
 }
 
 templ Base(props BaseProps) {
@@ -10,13 +11,40 @@ templ Base(props BaseProps) {
 		<head>
 			<meta charset="utf-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml"/>
+			<link rel="manifest" href="/assets/manifest.json"/>
+			<meta name="theme-color" content="#141414"/>
 			<title>{ props.Title }</title>
+			if props.Description != "" {
+				<meta name="description" content={ props.Description }/>
+			}
+			<link rel="preconnect" href="https://fonts.googleapis.com"/>
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+			<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap"/>
+			<script>document.documentElement.classList.add('js')</script>
+			<link rel="stylesheet" href="/assets/css/reveal.css"/>
 			<link rel="stylesheet" href="/assets/css/app.css"/>
+			<script src="/assets/js/reveal.js" defer></script>
 		</head>
 		<body>
-			<main class="container">
+			<a class="skip" href="#main">Skip to the sightings</a>
+			<header class="topbar">
+				<a class="brand" href="/">
+					<img src="/assets/images/logo.svg" alt="Wild, Observed, home" width="28" height="28"/>
+					<span>Wild, Observed</span>
+				</a>
+				<nav class="topbar__nav" aria-label="Main">
+					<a href="/#sightings">Sightings</a>
+					<a href="/#about">About</a>
+				</nav>
+			</header>
+			<main id="main">
 				{ children... }
 			</main>
+			<footer class="footer" id="about">
+				<p class="footer__lede">Every photo here is a real sighting, shared with GBIF by the people who saw it.</p>
+				<p class="footer__small">Data from the Global Biodiversity Information Facility. Photos belong to their creators.</p>
+			</footer>
 			<script src="/assets/js/app.js"></script>
 		</body>
 	</html>
